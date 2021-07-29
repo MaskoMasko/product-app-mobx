@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Button,
@@ -15,6 +15,11 @@ import { observer } from "mobx-react";
 //then u go in
 export const MainProductScreen = observer(({ navigation }) => {
   const [showOptions, setShowOptions] = useState(false);
+  const url = "http://mockapi.ddns.net/APIHandler";
+
+  useEffect(() => {
+    store.fetchingData(url);
+  }, []);
 
   return (
     <View
@@ -47,26 +52,27 @@ export const MainProductScreen = observer(({ navigation }) => {
         ></CustBtn>
       </Modal>
       <ScrollView>
-        {store.state.dataFetched.map((e, i) => {
-          return (
-            <TouchableOpacity
-              onPress={() => {
-                store.selectedProduct(e.name);
-                navigation.navigate("ProductDetails");
-              }}
-              key={i}
-              style={{
-                width: 150,
-                height: 150,
-                backgroundColor: "red",
-                margin: 10,
-                alignSelf: "center",
-              }}
-            >
-              <Text>{e.name}</Text>
-            </TouchableOpacity>
-          );
-        })}
+        {store.state.dataFetched.map((e) => {
+          return <Text>{e.naslov}</Text>;
+        })
+        // return (
+        // <TouchableOpacity
+        //   onPress={() => {
+        //     store.selectedProduct(e.name);
+        //     navigation.navigate("ProductDetails");
+        //   }}
+        //   key={i}
+        //   style={{
+        //     width: 150,
+        //     height: 150,
+        //     backgroundColor: "red",
+        //     margin: 10,
+        //     alignSelf: "center",
+        //   }}
+        // >
+        // </TouchableOpacity>
+        // );
+        }
       </ScrollView>
     </View>
   );
