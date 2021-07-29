@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TextInput, ScrollView, CheckBox } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  ScrollView,
+  CheckBox,
+  TouchableOpacity,
+} from "react-native";
 import { observer } from "mobx-react";
 import { store } from "../store/productStore";
 
 //filtering options
-export const FilterScreen = observer(() => {
+export const FilterScreen = observer(({ navigation }) => {
   const [value, setValue] = useState("");
   const [selection, setSelection] = useState(false);
 
@@ -43,7 +50,18 @@ export const FilterScreen = observer(() => {
           ></TextInput>
           <ScrollView>
             {store.state.filteredItemsByName.map((e, i) => {
-              return <Text key={i}>{e}</Text>;
+              return (
+                <TouchableOpacity
+                  style={{ width: 100, height: 100, backgroundColor: "blue" }}
+                  onPress={() => {
+                    store.selectedProduct(e);
+                    navigation.navigate("Product Details");
+                  }}
+                  key={i}
+                >
+                  <Text>{e}</Text>
+                </TouchableOpacity>
+              );
             })}
           </ScrollView>
         </View>
