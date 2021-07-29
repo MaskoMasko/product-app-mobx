@@ -11,6 +11,11 @@ export const MainProductScreen = observer(({ navigation }) => {
         title="Options"
         onPress={() => navigation.navigate("Options")}
       ></Button>
+      <Button
+        title="Your cart"
+        onPress={() => navigation.navigate("Cart")}
+      ></Button>
+
       <ScrollView>
         {store.state.dataFetched.map((e, i) => {
           return (
