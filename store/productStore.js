@@ -2,10 +2,17 @@ import { makeAutoObservable, observable, action, flow, autorun } from "mobx";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const state = observable({
-  dataFetched: ["1", "2", "3", "4", "5"],
+  dataFetched: [
+    { num: "12", name: "da" },
+    { num: "22", name: "ne" },
+    { num: "32", name: "mozda" },
+    { num: "42", name: "daaaa" },
+    { num: "52", name: "zgrada" },
+  ],
   chosenProduct: undefined,
   cart: [],
-  filteredItems: [],
+  filteredItemsByName: [],
+  filteredItemsByNum: [],
 });
 
 // const fetchingData = flow(function* fetchingData(url) {
@@ -26,12 +33,24 @@ const removeItemFromCart = action((id) => {
   state.cart.splice(id, 1);
 });
 
-const filterItems = action((value) => {
-  for (let i = 0; i < state.dataFetched.length; i++) {
-    if (state.dataFetched[i].startsWith(value)) {
-      state.filteredItems.push(state.dataFetched[i]);
+const filterItemsByName = action((value) => {
+  state.dataFetched.filter((item) => {
+    if (item.name.startsWith(value)) {
+      state.filteredItemsByName.push(item.name);
+      const unique = Array.from(new Set([...state.filteredItemsByName]));
+      state.filteredItemsByName = unique;
     }
-  }
+  });
+});
+
+const filterItemsByNum = action((value) => {
+  state.dataFetched.filter((item) => {
+    if (item.num.startsWith(value)) {
+      state.filteredItemsByNum.push(item.num);
+      const unique = Array.from(new Set([...state.filteredItemsByNum]));
+      state.filteredItemsByNum = unique;
+    }
+  });
 });
 
 export const store = {
@@ -39,5 +58,6 @@ export const store = {
   selectedProduct,
   addItemToCart,
   removeItemFromCart,
-  filterItems,
+  filterItemsByName,
+  filterItemsByNum,
 };
