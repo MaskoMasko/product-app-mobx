@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import { View, Button, Text, ScrollView, TouchableOpacity } from "react-native";
 import { store } from "../store/productStore";
 import { observer } from "mobx-react";
 
@@ -7,6 +7,10 @@ import { observer } from "mobx-react";
 export const MainProductScreen = observer(({ navigation }) => {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <Button
+        title="Options"
+        onPress={() => navigation.navigate("Options")}
+      ></Button>
       <ScrollView>
         {store.state.dataFetched.map((e, i) => {
           return (
