@@ -2,13 +2,7 @@ import { makeAutoObservable, observable, action, flow, autorun } from "mobx";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const state = observable({
-  dataFetched: [
-    { num: "12", name: "da" },
-    { num: "22", name: "ne" },
-    { num: "32", name: "mozda" },
-    { num: "42", name: "daaaa" },
-    { num: "52", name: "zgrada" },
-  ],
+  dataFetched: [],
   chosenProduct: undefined,
   cart: [],
   filteredItemsByName: [],
@@ -53,6 +47,13 @@ const filterItemsByNum = action((value) => {
   });
 });
 
+const fetchingData = flow(function* fetchingData(url) {
+  const result = yield fetch(url);
+  const things = yield result.json();
+  state.dataFetched = Object.values(things);
+  state.dataFetched.map((e) => console.log(e.naslov));
+});
+
 export const store = {
   state,
   selectedProduct,
@@ -60,4 +61,5 @@ export const store = {
   removeItemFromCart,
   filterItemsByName,
   filterItemsByNum,
+  fetchingData,
 };
