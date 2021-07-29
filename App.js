@@ -20,15 +20,15 @@ function App() {
           component={HomeScreen}
         />
         <Stack.Screen
-          name="Main Product Screen"
+          name="ProductList"
           component={MainProductScreen}
         ></Stack.Screen>
         <Stack.Screen
-          name="Product Details"
+          name="ProductDetails"
           component={ProductDetailScreen}
         ></Stack.Screen>
         <Stack.Screen name="Cart" component={CartScreen}></Stack.Screen>
-        <Stack.Screen name="Options" component={FilterScreen}></Stack.Screen>
+        <Stack.Screen name="Filter" component={FilterScreen}></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );

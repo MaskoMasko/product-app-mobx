@@ -55,7 +55,7 @@ export const FilterScreen = observer(({ navigation }) => {
                   style={{ width: 100, height: 100, backgroundColor: "blue" }}
                   onPress={() => {
                     store.selectedProduct(e);
-                    navigation.navigate("Product Details");
+                    navigation.navigate("ProductDetails");
                   }}
                   key={i}
                 >
