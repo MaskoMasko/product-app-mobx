@@ -5,6 +5,7 @@ const state = observable({
   dataFetched: ["1", "2", "3", "4", "5"],
   chosenProduct: undefined,
   cart: [],
+  filteredItems: [],
 });
 
 // const fetchingData = flow(function* fetchingData(url) {
@@ -25,9 +26,18 @@ const removeItemFromCart = action((id) => {
   state.cart.splice(id, 1);
 });
 
+const filterItems = action((value) => {
+  for (let i = 0; i < state.dataFetched.length; i++) {
+    if (state.dataFetched[i].startsWith(value)) {
+      state.filteredItems.push(state.dataFetched[i]);
+    }
+  }
+});
+
 export const store = {
   state,
   selectedProduct,
   addItemToCart,
   removeItemFromCart,
+  filterItems,
 };
