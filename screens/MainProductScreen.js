@@ -16,7 +16,7 @@ export const MainProductScreen = observer(({ navigation }) => {
           return (
             <TouchableOpacity
               onPress={() => {
-                store.selectedProduct(e);
+                store.selectedProduct(e.name);
                 navigation.navigate("Product Details");
               }}
               key={i}
@@ -27,7 +27,7 @@ export const MainProductScreen = observer(({ navigation }) => {
                 margin: 10,
               }}
             >
-              <Text>{e}</Text>
+              <Text>{e.name}</Text>
             </TouchableOpacity>
           );
         })}
