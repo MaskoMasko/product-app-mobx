@@ -7,6 +7,16 @@ import { observer } from "mobx-react";
 export const ProductDetailScreen = observer(({ navigation }) => {
   const { naslov, cijenaUKN, dostupneVelicine, id } = store.state.chosenProduct;
   var urlNaslov = naslov.replace(/\//g, "").replace(/\’/g, "");
+
+  var splitaneVelicine = dostupneVelicine.split(" ");
+
+  splitaneVelicine.map((e, i) => {
+    if (i % 2 == 0) {
+      store.state.pojedinacneVelicine.push(e);
+      store.state.odabranaVelicina = store.state.pojedinacneVelicine[0];
+    }
+  });
+
   return (
     <View
       style={{
@@ -31,6 +41,20 @@ export const ProductDetailScreen = observer(({ navigation }) => {
               </View>
               <View style={styles.textPlacement}>
                 <Text style={styles.THICCText}>Dostupne Velicine:</Text>
+                <View style={{ flexDirection: "row" }}>
+                  {store.state.pojedinacneVelicine.map((e, i) => {
+                    return (
+                      <Button
+                        title={e}
+                        key={i}
+                        onPress={() => {
+                          store.state.odabranaVelicina =
+                            store.state.pojedinacneVelicine[i];
+                        }}
+                      ></Button>
+                    );
+                  })}
+                </View>
               </View>
               <View style={styles.aboutText}>
                 <Text style={styles.thiccText}>ABOUT PRODUCT</Text>
