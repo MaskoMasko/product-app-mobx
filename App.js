@@ -37,7 +37,7 @@ function App() {
           name="Cart"
           component={CartScreen}
         ></Stack.Screen>
-        <Stack.Screen name="Filter" component={FilterScreen}></Stack.Screen>
+        {/* <Stack.Screen name="Filter" component={FilterScreen}></Stack.Screen> */}
       </Stack.Navigator>
     </NavigationContainer>
   );
