@@ -14,10 +14,7 @@ import { store } from "../store/productStore";
 import { observer } from "mobx-react";
 
 //then u go in
-export const MainProductScreen = observer(({ navigation, route }) => {
-  if (route.name == "ProductList") {
-    store.state.pojedinacneVelicine = [];
-  }
+export const MainProductScreen = observer(({ navigation }) => {
   const [showOptions, setShowOptions] = useState(false);
   const url = "http://mockapi.ddns.net/APIHandler";
   const scrollRef = useRef();
@@ -97,7 +94,7 @@ export const MainProductScreen = observer(({ navigation, route }) => {
       ) : (
         <ScrollView ref={scrollRef} style={{ backgroundColor: "#fff6cc" }}>
           {store.state.itemsPerPageArray.map((product, idx) => {
-            const { naslov, cijenaUKN, dostupneVelicine, id } = product;
+            const { naslov, cijenaUKN, dostupneVelicine, id, size } = product;
             var urlNaslov = naslov.replace(/\//g, "").replace(/\’/g, "");
             return (
               <TouchableOpacity
@@ -105,6 +102,7 @@ export const MainProductScreen = observer(({ navigation, route }) => {
                 style={styles.itemPrePageProduct}
                 key={idx}
                 onPress={() => {
+                  store.state.pojedinacneVelicine = [];
                   store.state.chosenProduct = product;
                   navigation.navigate("ProductDetails");
                 }}
