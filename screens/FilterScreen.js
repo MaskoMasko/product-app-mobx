@@ -49,7 +49,8 @@ export const FilterScreen = observer(({ navigation }) => {
             onChangeText={(e) => setValue(e)}
           ></TextInput>
           <ScrollView>
-            {store.state.filteredItemsByName.map((e, i) => {
+            {store.state.filteredItemsByName.map((product, i) => {
+              const { naslov } = product;
               return (
                 <TouchableOpacity
                   style={{ width: 100, height: 100, backgroundColor: "blue" }}
@@ -59,7 +60,7 @@ export const FilterScreen = observer(({ navigation }) => {
                   }}
                   key={i}
                 >
-                  <Text>{e}</Text>
+                  <Text>{naslov}</Text>
                 </TouchableOpacity>
               );
             })}

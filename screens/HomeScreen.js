@@ -6,7 +6,7 @@ import { CustBtn } from "../components/CustBtn";
 export const HomeScreen = observer(({ navigation }) => {
   //welcome to product page
   return (
-    <View style={{ flex: 1, alignItems: "center" }}>
+    <View style={{ flex: 1, alignItems: "center", backgroundColor: "#fff6cc" }}>
       <Text style={[styles.greetingText, { fontSize: 24, marginTop: 200 }]}>
         Hello User!
       </Text>

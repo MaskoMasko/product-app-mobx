@@ -7,6 +7,9 @@ const state = observable({
   cart: [],
   filteredItemsByName: [],
   filteredItemsByNum: [],
+  itemsPerPageArray: [],
+  itemsPerPage: 20,
+  counter: 0,
 });
 
 // const fetchingData = flow(function* fetchingData(url) {
@@ -29,8 +32,8 @@ const removeItemFromCart = action((id) => {
 
 const filterItemsByName = action((value) => {
   state.dataFetched.filter((item) => {
-    if (item.name.startsWith(value)) {
-      state.filteredItemsByName.push(item.name);
+    if (item.naslov.startsWith(value)) {
+      state.filteredItemsByName.push(item.naslov);
       const unique = Array.from(new Set([...state.filteredItemsByName]));
       state.filteredItemsByName = unique;
     }
@@ -51,7 +54,10 @@ const fetchingData = flow(function* fetchingData(url) {
   const result = yield fetch(url);
   const things = yield result.json();
   state.dataFetched = Object.values(things);
-  state.dataFetched.map((e) => console.log(e.naslov));
+  state.itemsPerPageArray = state.dataFetched.splice(
+    state.counter,
+    state.itemsPerPage
+  );
 });
 
 export const store = {

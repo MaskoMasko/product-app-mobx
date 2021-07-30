@@ -15,16 +15,21 @@ function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          options={{ title: "Welcome To Product App" }}
+          options={{
+            title: "Welcome To Product App",
+            headerStyle: { backgroundColor: "orange" },
+          }}
           name="Home"
           component={HomeScreen}
         />
         <Stack.Screen
+          options={{ headerStyle: { backgroundColor: "orange" } }}
           name="ProductList"
           component={MainProductScreen}
         ></Stack.Screen>
         <Stack.Screen
           name="ProductDetails"
+          options={{ headerStyle: { backgroundColor: "orange" } }}
           component={ProductDetailScreen}
         ></Stack.Screen>
         <Stack.Screen name="Cart" component={CartScreen}></Stack.Screen>

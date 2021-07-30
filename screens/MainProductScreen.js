@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   Button,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Modal,
   StyleSheet,
+  Image,
 } from "react-native";
 import { CustBtn } from "../components/CustBtn";
 import { store } from "../store/productStore";
@@ -19,13 +20,14 @@ export const MainProductScreen = observer(({ navigation }) => {
 
   useEffect(() => {
     store.fetchingData(url);
-  }, []);
+  }, [store.state.counter]);
 
   return (
     <View
       style={{
         flex: 1,
         justifyContent: "center",
+        backgroundColor: "#fff6cc",
       }}
     >
       <CustBtn
@@ -51,28 +53,63 @@ export const MainProductScreen = observer(({ navigation }) => {
           }}
         ></CustBtn>
       </Modal>
-      <ScrollView>
-        {store.state.dataFetched.map((e) => {
-          return <Text>{e.naslov}</Text>;
-        })
-        // return (
-        // <TouchableOpacity
-        //   onPress={() => {
-        //     store.selectedProduct(e.name);
-        //     navigation.navigate("ProductDetails");
-        //   }}
-        //   key={i}
-        //   style={{
-        //     width: 150,
-        //     height: 150,
-        //     backgroundColor: "red",
-        //     margin: 10,
-        //     alignSelf: "center",
-        //   }}
-        // >
-        // </TouchableOpacity>
-        // );
-        }
+      <ScrollView style={{ backgroundColor: "#fff6cc" }}>
+        {store.state.itemsPerPageArray.map((product, idx) => {
+          const { naslov, cijenaUKN, dostupneVelicine, id } = product;
+          var urlNaslov = naslov.replace(/\//g, "").replace(/\’/g, "");
+          // return (
+          //   <View key={idx}>
+          //     <Text>{id}</Text>
+          //     <Text>{naslov}</Text>
+          //     <Text>{cijenaUKN}</Text>
+          //     <Text>{dostupneVelicine}</Text>
+          //     <Image
+          //       source={{
+          //         uri: `http://mockapi.ddns.net/YEE/${urlNaslov}/1.png`,
+          //       }}
+          //       style={{ width: 200, height: 200 }}
+          //     ></Image>
+          //   </View>
+          // );
+          return (
+            <TouchableOpacity
+              activeOpacity={0.5}
+              style={styles.itemPrePageProduct}
+              key={idx}
+              onPress={() => {
+                store.state.chosenProduct = product;
+                navigation.navigate("ProductDetails");
+              }}
+            >
+              <View style={{ alignItems: "center" }}>
+                <Image
+                  source={{
+                    uri: `http://mockapi.ddns.net/YEE/${urlNaslov}/1.png`,
+                  }}
+                  style={styles.altImage}
+                />
+                <Text style={styles.naslovText}>{naslov}</Text>
+                <View style={styles.textUnderHeading}>
+                  <View style={styles.textPlacement}>
+                    <Text style={styles.THICCText}>CIjena:</Text>
+                    <Text style={styles.THICCText}>{cijenaUKN}</Text>
+                  </View>
+                  <View style={styles.textPlacement}>
+                    <Text style={styles.THICCText}>Dostupne Velicine:</Text>
+                    <Text style={styles.THICCText}>{dostupneVelicine}</Text>
+                  </View>
+                </View>
+              </View>
+            </TouchableOpacity>
+          );
+        })}
+
+        <Button
+          title="next"
+          onPress={() => {
+            store.state.counter += 20;
+          }}
+        ></Button>
       </ScrollView>
     </View>
   );
@@ -84,5 +121,55 @@ const styles = StyleSheet.create({
     backgroundColor: "orange",
     borderRadius: 10,
     margin: 10,
+  },
+  itemPrePageProduct: {
+    backgroundColor: "#ffc971",
+    width: "94%",
+    marginHorizontal: "3%",
+    margin: 10,
+    padding: 10,
+    paddingBottom: 20,
+    borderWidth: 3,
+    borderColor: "black",
+    shadowColor: "#470000",
+    elevation: 7,
+  },
+  altImage: {
+    backgroundColor: "aliceblue",
+    height: 350,
+    width: "100%",
+  },
+  naslovText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  textUnderHeading: {
+    backgroundColor: "#fbffb9",
+    borderRadius: 10,
+    paddingVertical: 15,
+    width: "98%",
+  },
+  textPlacement: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginHorizontal: "5%",
+  },
+  THICCText: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  aboutText: {
+    width: "90%",
+    alignSelf: "center",
+    paddingTop: 30,
+  },
+  thiccText: {
+    fontSize: 14,
+    fontWeight: "bold",
+  },
+  tikText: {
+    fontSize: 12,
+    fontWeight: "bold",
   },
 });

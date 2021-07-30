@@ -14,9 +14,10 @@ export const CartScreen = observer(({ navigation }) => {
         ) : (
           <ScrollView>
             {store.state.cart.map((e, i) => {
+              const { naslov } = e;
               return (
                 <View key={i}>
-                  <Text>{e}</Text>
+                  <Text>{naslov}</Text>
                   <Button
                     title="remove item"
                     onPress={() => store.removeItemFromCart(i)}
