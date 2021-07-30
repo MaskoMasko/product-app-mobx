@@ -62,31 +62,10 @@ const removeItemFromCart = action(function removeItemFromCart(id) {
   state.cart.splice(id, 1);
 });
 
-// const filterItemsByName = action((value) => {
-//   state.dataFetched.filter((item) => {
-//     if (item.naslov.startsWith(value)) {
-//       state.filteredItemsByName.push(item.naslov);
-//       const unique = Array.from(new Set([...state.filteredItemsByName]));
-//       state.filteredItemsByName = unique;
-//     }
-//   });
-// });
-
-// const filterItemsByNum = action((value) => {
-//   state.dataFetched.filter((item) => {
-//     if (item.num.startsWith(value)) {
-//       state.filteredItemsByNum.push(item.num);
-//       const unique = Array.from(new Set([...state.filteredItemsByNum]));
-//       state.filteredItemsByNum = unique;
-//     }
-//   });
-// });
-
 //CA SE DESAVA
 const filterFunciton = action((value, filterMethod) => {
   state.dataFetched.filter((item) => {
     if (item[filterMethod].startsWith(value)) {
-      console.log(item.naslov);
       //DELA
     }
   });
