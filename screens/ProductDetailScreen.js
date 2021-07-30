@@ -4,8 +4,9 @@ import { store } from "../store/productStore";
 import { observer } from "mobx-react";
 
 //Product details
-export const ProductDetailScreen = observer(({ navigation }) => {
-  const { naslov, cijenaUKN, dostupneVelicine, id } = store.state.chosenProduct;
+export const ProductDetailScreen = observer(({ navigation, route }) => {
+  const { naslov, cijenaUKN, dostupneVelicine, id, size } =
+    store.state.chosenProduct;
   var urlNaslov = naslov.replace(/\//g, "").replace(/\’/g, "");
 
   var splitaneVelicine = dostupneVelicine.split(" ");
@@ -13,7 +14,6 @@ export const ProductDetailScreen = observer(({ navigation }) => {
   splitaneVelicine.map((e, i) => {
     if (i % 2 == 0) {
       store.state.pojedinacneVelicine.push(e);
-      store.state.odabranaVelicina = store.state.pojedinacneVelicine[0];
     }
   });
 
@@ -41,16 +41,14 @@ export const ProductDetailScreen = observer(({ navigation }) => {
               </View>
               <View style={styles.textPlacement}>
                 <Text style={styles.THICCText}>Dostupne Velicine:</Text>
+                <Text>{size}</Text>
                 <View style={{ flexDirection: "row" }}>
                   {store.state.pojedinacneVelicine.map((e, i) => {
                     return (
                       <Button
                         title={e}
                         key={i}
-                        onPress={() => {
-                          store.state.odabranaVelicina =
-                            store.state.pojedinacneVelicine[i];
-                        }}
+                        // onPress={() => store.state.odabranaVelicina = store.state.pojedinacneVelicine[i]}
                       ></Button>
                     );
                   })}
