@@ -12,6 +12,7 @@ import {
 import { CustBtn } from "../components/CustBtn";
 import { store } from "../store/productStore";
 import { observer } from "mobx-react";
+import { autorun, action } from "mobx";
 
 //then u go in
 export const MainProductScreen = observer(({ navigation }) => {
@@ -19,12 +20,12 @@ export const MainProductScreen = observer(({ navigation }) => {
   const url = "http://mockapi.ddns.net/APIHandler";
   const scrollRef = useRef();
 
-  const onNextPress = () => {
+  const onNextPress = action(() => {
     scrollRef.current?.scrollTo({
       y: 0,
       animated: false,
     });
-  };
+  });
 
   useEffect(() => {
     store.fetchingData(url);
@@ -94,18 +95,19 @@ export const MainProductScreen = observer(({ navigation }) => {
       ) : (
         <ScrollView ref={scrollRef} style={{ backgroundColor: "#fff6cc" }}>
           {store.state.itemsPerPageArray.map((product, idx) => {
-            const { naslov, cijenaUKN, dostupneVelicine, id, size } = product;
-            var urlNaslov = naslov.replace(/\//g, "").replace(/\’/g, "");
+            const { naslov, cijenaUKN, dostupneVelicine, id } = product;
+            const urlNaslov = naslov.replace(/\//g, "").replace(/\’/g, "");
             return (
               <TouchableOpacity
                 activeOpacity={0.5}
                 style={styles.itemPrePageProduct}
                 key={idx}
-                onPress={() => {
+                onPress={action(() => {
                   store.state.pojedinacneVelicine = [];
                   store.state.chosenProduct = product;
+                  console.log(store.state.odabranaVelicna);
                   navigation.navigate("ProductDetails");
-                }}
+                })}
               >
                 <View style={{ alignItems: "center" }}>
                   <Image
@@ -139,10 +141,10 @@ export const MainProductScreen = observer(({ navigation }) => {
 
           <Button
             title="next"
-            onPress={() => {
+            onPress={action(() => {
               store.state.counter += 20;
               onNextPress();
-            }}
+            })}
           ></Button>
         </ScrollView>
       )}
