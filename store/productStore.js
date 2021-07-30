@@ -8,9 +8,9 @@ const state = observable({
   chosenProduct: undefined,
   get chosenProductDostupneVelicine() {
     if (!state.chosenProduct) return undefined;
-
     const splitaneVelicine = state.chosenProduct.dostupneVelicine.split(", ");
     return splitaneVelicine;
+    // chosenProductDostupneVelicine je njegov return - nije normalan
   },
   cart: [],
   filteredItemsByName: [],
