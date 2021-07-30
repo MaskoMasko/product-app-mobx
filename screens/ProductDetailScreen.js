@@ -2,20 +2,13 @@ import React from "react";
 import { View, Text, Button, StyleSheet, Image } from "react-native";
 import { store } from "../store/productStore";
 import { observer } from "mobx-react";
+import { action, runInAction } from "mobx";
 
 //Product details
 export const ProductDetailScreen = observer(({ navigation, route }) => {
-  const { naslov, cijenaUKN, dostupneVelicine, id, size } =
-    store.state.chosenProduct;
-  var urlNaslov = naslov.replace(/\//g, "").replace(/\’/g, "");
-
-  var splitaneVelicine = dostupneVelicine.split(" ");
-
-  splitaneVelicine.map((e, i) => {
-    if (i % 2 == 0) {
-      store.state.pojedinacneVelicine.push(e);
-    }
-  });
+  const { naslov, cijenaUKN, id, size } = store.state.chosenProduct;
+  const dostupneVelicine = store.state.chosenProductDostupneVelicine;
+  const urlNaslov = naslov.replace(/\//g, "").replace(/\’/g, "");
 
   return (
     <View
@@ -41,14 +34,18 @@ export const ProductDetailScreen = observer(({ navigation, route }) => {
               </View>
               <View style={styles.textPlacement}>
                 <Text style={styles.THICCText}>Dostupne Velicine:</Text>
-                <Text>{size}</Text>
                 <View style={{ flexDirection: "row" }}>
-                  {store.state.pojedinacneVelicine.map((e, i) => {
+                  {dostupneVelicine.map((pojedinacnaVelicina, i) => {
                     return (
                       <Button
-                        title={e}
+                        title={pojedinacnaVelicina}
                         key={i}
-                        // onPress={() => store.state.odabranaVelicina = store.state.pojedinacneVelicine[i]}
+                        onPress={() => {
+                          runInAction(() => {
+                            store.state.chosenProduct.size =
+                              pojedinacnaVelicina;
+                          });
+                        }}
                       ></Button>
                     );
                   })}
