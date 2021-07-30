@@ -1,9 +1,17 @@
 import { makeAutoObservable, observable, action, flow, autorun } from "mobx";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+//getteri, stateTree i primitives
+
 const state = observable({
   dataFetched: [],
   chosenProduct: undefined,
+  get chosenProductDostupneVelicine() {
+    if (!state.chosenProduct) return undefined;
+
+    const splitaneVelicine = state.chosenProduct.dostupneVelicine.split(", ");
+    return splitaneVelicine;
+  },
   cart: [],
   filteredItemsByName: [],
   filteredItemsByNum: [],
@@ -13,7 +21,7 @@ const state = observable({
   loading: false,
   zbroj: "0",
   pojedinacneVelicine: [],
-  // odabranaVelicina: undefined,
+  odabranaVelicina: undefined,
 });
 
 // const fetchingData = flow(function* fetchingData(url) {
@@ -22,20 +30,32 @@ const state = observable({
 //   console.log(resultsToJson);
 // });
 
-const selectedProduct = action((product) => {
+const selectedProduct = action(function selectedProduct(product) {
   state.chosenProduct = product;
 });
 
 const addItemToCart = action((product) => {
   for (let i = 0; i < state.cart.length; i++) {
     if (state.cart[i].naslov == product.naslov) {
+      console.log(state.cart);
       return [...state.cart];
     }
   }
   return state.cart.push(product);
 });
 
-const removeItemFromCart = action((id) => {
+const racun = action(() => {
+  let text = 0;
+  for (let i = 0; i < store.state.cart.length; i++) {
+    const splitano = store.state.cart[i].cijenaUKN.split(".");
+    const parsano = parseInt(splitano[0]);
+    text += parsano;
+  }
+  store.state.zbroj = text;
+  return store.state.zbroj;
+});
+
+const removeItemFromCart = action(function removeItemFromCart(id) {
   state.cart.splice(id, 1);
 });
 
@@ -64,11 +84,12 @@ const fetchingData = flow(function* fetchingData(url) {
   const result = yield fetch(url);
   const things = yield result.json();
   state.loading = false;
-  // things.map((e) => {
-  //   state.odabranaVelicina = e.dostupneVelicine[0];
-  //   e.size = state.odabranaVelicina;
-  // });
-  state.dataFetched = Object.values(things);
+  const thingsWithSize = things.map((e) => {
+    state.odabranaVelicina = e.dostupneVelicine[0];
+    e.size = state.odabranaVelicina;
+    return e;
+  });
+  state.dataFetched = thingsWithSize;
   state.itemsPerPageArray = state.dataFetched.splice(
     state.counter,
     state.itemsPerPage
@@ -83,4 +104,5 @@ export const store = {
   // filterItemsByName,
   // filterItemsByNum,
   fetchingData,
+  racun,
 };
