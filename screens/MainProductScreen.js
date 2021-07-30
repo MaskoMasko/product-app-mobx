@@ -14,7 +14,10 @@ import { store } from "../store/productStore";
 import { observer } from "mobx-react";
 
 //then u go in
-export const MainProductScreen = observer(({ navigation }) => {
+export const MainProductScreen = observer(({ navigation, route }) => {
+  if (route.name == "ProductList") {
+    store.state.pojedinacneVelicine = [];
+  }
   const [showOptions, setShowOptions] = useState(false);
   const url = "http://mockapi.ddns.net/APIHandler";
   const scrollRef = useRef();
