@@ -13,7 +13,7 @@ const state = observable({
   loading: false,
   zbroj: "0",
   pojedinacneVelicine: [],
-  odabranaVelicina: undefined,
+  // odabranaVelicina: undefined,
 });
 
 // const fetchingData = flow(function* fetchingData(url) {
@@ -29,7 +29,6 @@ const selectedProduct = action((product) => {
 const addItemToCart = action((product) => {
   for (let i = 0; i < state.cart.length; i++) {
     if (state.cart[i].naslov == product.naslov) {
-      console.log(state.cart);
       return [...state.cart];
     }
   }
@@ -65,6 +64,10 @@ const fetchingData = flow(function* fetchingData(url) {
   const result = yield fetch(url);
   const things = yield result.json();
   state.loading = false;
+  // things.map((e) => {
+  //   state.odabranaVelicina = e.dostupneVelicine[0];
+  //   e.size = state.odabranaVelicina;
+  // });
   state.dataFetched = Object.values(things);
   state.itemsPerPageArray = state.dataFetched.splice(
     state.counter,
