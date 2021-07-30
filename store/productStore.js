@@ -1,5 +1,6 @@
 import { makeAutoObservable, observable, action, flow, autorun } from "mobx";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useLayoutEffect } from "react/cjs/react.production.min";
 
 //getteri, stateTree i primitives
 
@@ -13,15 +14,18 @@ const state = observable({
     // chosenProductDostupneVelicine je njegov return - nije normalan
   },
   cart: [],
-  filteredItemsByName: [],
-  filteredItemsByNum: [],
   itemsPerPageArray: [],
+  //---------------------
   itemsPerPage: 20,
   counter: 0,
   loading: false,
   zbroj: "0",
+  //---------------------
   pojedinacneVelicine: [],
   odabranaVelicina: undefined,
+  //---------------------
+  filteredItems: [],
+  value: "",
 });
 
 // const fetchingData = flow(function* fetchingData(url) {
@@ -37,7 +41,6 @@ const selectedProduct = action(function selectedProduct(product) {
 const addItemToCart = action((product) => {
   for (let i = 0; i < state.cart.length; i++) {
     if (state.cart[i].naslov == product.naslov) {
-      console.log(state.cart);
       return [...state.cart];
     }
   }
@@ -79,6 +82,16 @@ const removeItemFromCart = action(function removeItemFromCart(id) {
 //   });
 // });
 
+//CA SE DESAVA
+const filterFunciton = action((value, filterMethod) => {
+  state.dataFetched.filter((item) => {
+    if (item[filterMethod].startsWith(value)) {
+      console.log(item.naslov);
+      //DELA
+    }
+  });
+});
+
 const fetchingData = flow(function* fetchingData(url) {
   state.loading = true;
   const result = yield fetch(url);
@@ -103,6 +116,7 @@ export const store = {
   removeItemFromCart,
   // filterItemsByName,
   // filterItemsByNum,
+  filterFunciton,
   fetchingData,
   racun,
 };
