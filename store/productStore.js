@@ -10,6 +10,7 @@ const state = observable({
   itemsPerPageArray: [],
   itemsPerPage: 20,
   counter: 0,
+  loading: false,
 });
 
 // const fetchingData = flow(function* fetchingData(url) {
@@ -51,8 +52,10 @@ const filterItemsByNum = action((value) => {
 });
 
 const fetchingData = flow(function* fetchingData(url) {
+  state.loading = true;
   const result = yield fetch(url);
   const things = yield result.json();
+  state.loading = false;
   state.dataFetched = Object.values(things);
   state.itemsPerPageArray = state.dataFetched.splice(
     state.counter,
