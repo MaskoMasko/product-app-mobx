@@ -30,7 +30,7 @@ export const CartScreen = observer(({ navigation }) => {
         <Text style={styles.mainText}>Your Cart:</Text>
         <ScrollView>
           {store.state.cart.map((item, idx) => {
-            const { id, naslov, dostupneVelicine, cijenaUKN } = item;
+            const { id, naslov, cijenaUKN } = item;
             var urlNaslov = naslov.replace(/\//g, "").replace(/\’/g, "");
 
             return (
@@ -56,7 +56,9 @@ export const CartScreen = observer(({ navigation }) => {
                     <Text style={[styles.manjiText, { marginTop: 10 }]}>
                       {naslov}
                     </Text>
-                    <Text style={styles.manjiText}>{dostupneVelicine}</Text>
+                    <Text style={styles.manjiText}>
+                      {store.state.odabranaVelicina}
+                    </Text>
                     <Text style={styles.manjiText}>{cijenaUKN}</Text>
                   </View>
                 </View>
