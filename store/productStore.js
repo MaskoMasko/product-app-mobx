@@ -11,6 +11,7 @@ const state = observable({
   itemsPerPage: 20,
   counter: 0,
   loading: false,
+  zbroj: "0",
 });
 
 // const fetchingData = flow(function* fetchingData(url) {
