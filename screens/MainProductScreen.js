@@ -77,20 +77,6 @@ export const MainProductScreen = observer(({ navigation }) => {
           {store.state.itemsPerPageArray.map((product, idx) => {
             const { naslov, cijenaUKN, dostupneVelicine, id } = product;
             var urlNaslov = naslov.replace(/\//g, "").replace(/\’/g, "");
-            // return (
-            //   <View key={idx}>
-            //     <Text>{id}</Text>
-            //     <Text>{naslov}</Text>
-            //     <Text>{cijenaUKN}</Text>
-            //     <Text>{dostupneVelicine}</Text>
-            //     <Image
-            //       source={{
-            //         uri: `http://mockapi.ddns.net/YEE/${urlNaslov}/1.png`,
-            //       }}
-            //       style={{ width: 200, height: 200 }}
-            //     ></Image>
-            //   </View>
-            // );
             return (
               <TouchableOpacity
                 activeOpacity={0.5}
@@ -116,7 +102,14 @@ export const MainProductScreen = observer(({ navigation }) => {
                     </View>
                     <View style={styles.textPlacement}>
                       <Text style={styles.THICCText}>Dostupne Velicine:</Text>
-                      <Text style={styles.THICCText}>{dostupneVelicine}</Text>
+                      <View>
+                        <Text style={styles.THICCText}>{dostupneVelicine}</Text>
+                      </View>
+                      {/* <View style={styles.THICCText}>
+                        {dostupneVelicine.map((e, id) => {
+                          return <Text key={id}>{e}</Text>;
+                        })}
+                      </View> */}
                     </View>
                   </View>
                 </View>
