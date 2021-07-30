@@ -12,6 +12,8 @@ const state = observable({
   counter: 0,
   loading: false,
   zbroj: "0",
+  pojedinacneVelicine: [],
+  odabranaVelicina: undefined,
 });
 
 // const fetchingData = flow(function* fetchingData(url) {
@@ -25,32 +27,38 @@ const selectedProduct = action((product) => {
 });
 
 const addItemToCart = action((product) => {
-  state.cart.push(product);
+  for (let i = 0; i < state.cart.length; i++) {
+    if (state.cart[i].naslov == product.naslov) {
+      console.log(state.cart);
+      return [...state.cart];
+    }
+  }
+  return state.cart.push(product);
 });
 
 const removeItemFromCart = action((id) => {
   state.cart.splice(id, 1);
 });
 
-const filterItemsByName = action((value) => {
-  state.dataFetched.filter((item) => {
-    if (item.naslov.startsWith(value)) {
-      state.filteredItemsByName.push(item.naslov);
-      const unique = Array.from(new Set([...state.filteredItemsByName]));
-      state.filteredItemsByName = unique;
-    }
-  });
-});
+// const filterItemsByName = action((value) => {
+//   state.dataFetched.filter((item) => {
+//     if (item.naslov.startsWith(value)) {
+//       state.filteredItemsByName.push(item.naslov);
+//       const unique = Array.from(new Set([...state.filteredItemsByName]));
+//       state.filteredItemsByName = unique;
+//     }
+//   });
+// });
 
-const filterItemsByNum = action((value) => {
-  state.dataFetched.filter((item) => {
-    if (item.num.startsWith(value)) {
-      state.filteredItemsByNum.push(item.num);
-      const unique = Array.from(new Set([...state.filteredItemsByNum]));
-      state.filteredItemsByNum = unique;
-    }
-  });
-});
+// const filterItemsByNum = action((value) => {
+//   state.dataFetched.filter((item) => {
+//     if (item.num.startsWith(value)) {
+//       state.filteredItemsByNum.push(item.num);
+//       const unique = Array.from(new Set([...state.filteredItemsByNum]));
+//       state.filteredItemsByNum = unique;
+//     }
+//   });
+// });
 
 const fetchingData = flow(function* fetchingData(url) {
   state.loading = true;
@@ -69,7 +77,7 @@ export const store = {
   selectedProduct,
   addItemToCart,
   removeItemFromCart,
-  filterItemsByName,
-  filterItemsByNum,
+  // filterItemsByName,
+  // filterItemsByNum,
   fetchingData,
 };
