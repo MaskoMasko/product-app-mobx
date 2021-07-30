@@ -43,23 +43,42 @@ export const MainProductScreen = observer(({ navigation }) => {
         path="Options"
         onPress={() => setShowOptions(true)}
       ></CustBtn>
-      <Modal visible={showOptions}>
-        <CustBtn
-          title="FILTER"
-          path="Filter"
-          onPress={() => {
-            setShowOptions(false);
-            navigation.navigate("Filter");
+      <Modal visible={showOptions} animationType="slide">
+        <View
+          style={{
+            height: "100%",
+            justifyContent: "space-between",
+            backgroundColor: "#fff6cc",
           }}
-        ></CustBtn>
-        <CustBtn
-          title="CART"
-          path="Cart"
-          onPress={() => {
-            setShowOptions(false);
-            navigation.navigate("Cart");
-          }}
-        ></CustBtn>
+        >
+          <View>
+            <Text></Text>
+
+            <CustBtn
+              title="FILTER"
+              onPress={() => {
+                setShowOptions(false);
+                navigation.navigate("Filter");
+              }}
+            ></CustBtn>
+            <CustBtn
+              title="CART"
+              onPress={() => {
+                setShowOptions(false);
+                navigation.navigate("Cart");
+              }}
+            ></CustBtn>
+          </View>
+          <View>
+            <CustBtn
+              title="GO BACK"
+              onPress={() => {
+                setShowOptions(false);
+              }}
+            ></CustBtn>
+            <Text></Text>
+          </View>
+        </View>
       </Modal>
       {store.state.loading ? (
         <View
