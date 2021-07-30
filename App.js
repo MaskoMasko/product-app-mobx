@@ -32,7 +32,11 @@ function App() {
           options={{ headerStyle: { backgroundColor: "orange" } }}
           component={ProductDetailScreen}
         ></Stack.Screen>
-        <Stack.Screen name="Cart" component={CartScreen}></Stack.Screen>
+        <Stack.Screen
+          options={{ headerStyle: { backgroundColor: "orange" } }}
+          name="Cart"
+          component={CartScreen}
+        ></Stack.Screen>
         <Stack.Screen name="Filter" component={FilterScreen}></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
