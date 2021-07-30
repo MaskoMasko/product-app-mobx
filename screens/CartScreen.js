@@ -13,15 +13,6 @@ import { CustBtn } from "../components/CustBtn";
 
 //cart
 export const CartScreen = observer(({ navigation }) => {
-  var text = 0;
-
-  for (let i = 0; i < store.state.cart.length; i++) {
-    var splitano = store.state.cart[i].cijenaUKN.split(".");
-    var parsano = parseInt(splitano[0]);
-    text += parsano;
-  }
-  store.state.zbroj = text;
-
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <View
@@ -30,8 +21,8 @@ export const CartScreen = observer(({ navigation }) => {
         <Text style={styles.mainText}>Your Cart:</Text>
         <ScrollView>
           {store.state.cart.map((item, idx) => {
-            const { id, naslov, cijenaUKN } = item;
-            var urlNaslov = naslov.replace(/\//g, "").replace(/\’/g, "");
+            const { id, naslov, cijenaUKN, size } = item;
+            const urlNaslov = naslov.replace(/\//g, "").replace(/\’/g, "");
 
             return (
               <View
@@ -56,9 +47,7 @@ export const CartScreen = observer(({ navigation }) => {
                     <Text style={[styles.manjiText, { marginTop: 10 }]}>
                       {naslov}
                     </Text>
-                    <Text style={styles.manjiText}>
-                      {store.state.odabranaVelicina}
-                    </Text>
+                    <Text style={styles.manjiText}>{size}</Text>
                     <Text style={styles.manjiText}>{cijenaUKN}</Text>
                   </View>
                 </View>
@@ -94,7 +83,7 @@ export const CartScreen = observer(({ navigation }) => {
             },
           ]}
         >
-          Sve Ukupno: {store.state.zbroj} Kn
+          Sve Ukupno: {store.racun()} Kn
         </Text>
         <CustBtn
           title="GO BACK"
