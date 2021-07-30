@@ -105,7 +105,6 @@ export const MainProductScreen = observer(({ navigation }) => {
                 onPress={action(() => {
                   store.state.pojedinacneVelicine = [];
                   store.state.chosenProduct = product;
-                  console.log(store.state.odabranaVelicna);
                   navigation.navigate("ProductDetails");
                 })}
               >
