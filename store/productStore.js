@@ -67,6 +67,7 @@ const filterFunciton = action((value, filterMethod) => {
   state.dataFetched.filter((item) => {
     if (item[filterMethod].startsWith(value)) {
       //DELA
+      state.filteredItems.push(item[filterMethod]);
     }
   });
 });
