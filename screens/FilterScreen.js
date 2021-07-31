@@ -4,9 +4,7 @@ import {
   Text,
   TextInput,
   ScrollView,
-  CheckBox,
   TouchableOpacity,
-  Button,
 } from "react-native";
 import { observer } from "mobx-react";
 import { store } from "../store/productStore";
@@ -32,6 +30,11 @@ export const FilterScreen = observer(({ navigation }) => {
         value={store.state.value}
         onChangeText={action((e) => (store.state.value = e))}
       ></TextInput>
+      <ScrollView>
+        {store.state.filteredItems.map((e, i) => {
+          return <Text key={i}>{e}</Text>;
+        })}
+      </ScrollView>
     </View>
   );
 });
