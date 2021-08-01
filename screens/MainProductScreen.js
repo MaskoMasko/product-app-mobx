@@ -8,6 +8,7 @@ import {
   Modal,
   StyleSheet,
   Image,
+  Alert,
 } from "react-native";
 import { CustBtn } from "../components/CustBtn";
 import { store } from "../store/productStore";
@@ -19,6 +20,7 @@ export const MainProductScreen = observer(({ navigation }) => {
   const [showOptions, setShowOptions] = useState(false);
   const url = "http://mockapi.ddns.net/APIHandler";
   const scrollRef = useRef();
+  const coutnerRef = useRef(0);
 
   const onNextPress = action(() => {
     scrollRef.current?.scrollTo({
@@ -140,14 +142,65 @@ export const MainProductScreen = observer(({ navigation }) => {
               </TouchableOpacity>
             );
           })}
-
-          <Button
-            title="next"
-            onPress={action(() => {
-              store.state.counter += 20;
-              onNextPress();
-            })}
-          ></Button>
+          <View style={{ flexDirection: "row", alignSelf: "center" }}>
+            <TouchableOpacity
+              activeOpacity={0.5}
+              disabled={store.state.counter == 0}
+              onPress={action(() => {
+                if (store.state.counter > 0 && coutnerRef.current > 0) {
+                  store.state.counter -= 20;
+                  coutnerRef.current -= 1;
+                  onNextPress();
+                }
+              })}
+              style={
+                store.state.counter == 0
+                  ? [
+                      styles.loginButton,
+                      {
+                        width: "30%",
+                        margin: 10,
+                        backgroundColor: "rgba(255, 162, 80, .7)",
+                      },
+                    ]
+                  : [styles.loginButton, { width: "30%", margin: 10 }]
+              }
+            >
+              <Text style={styles.loginButtonText}>PREV PAGE</Text>
+            </TouchableOpacity>
+            <View>
+              <Text
+                style={[
+                  styles.loginButtonText,
+                  {
+                    width: 50,
+                    height: 40,
+                    marginHorizontal: 5,
+                    fontSize: 18,
+                    textAlign: "center",
+                    backgroundColor: "#04080F",
+                    paddingHorizontal: 10,
+                    paddingVertical: 5,
+                    borderRadius: 10,
+                    color: "white",
+                  },
+                ]}
+              >
+                {coutnerRef.current}
+              </Text>
+            </View>
+            <TouchableOpacity
+              activeOpacity={0.5}
+              onPress={action(() => {
+                store.state.counter += 20;
+                coutnerRef.current += 1;
+                onNextPress();
+              })}
+              style={[styles.loginButton, { width: "30%", margin: 10 }]}
+            >
+              <Text style={styles.loginButtonText}>NEXT PAGE</Text>
+            </TouchableOpacity>
+          </View>
         </ScrollView>
       )}
     </View>
@@ -210,5 +263,15 @@ const styles = StyleSheet.create({
   tikText: {
     fontSize: 12,
     fontWeight: "bold",
+  },
+  loginButton: {
+    padding: 10,
+    backgroundColor: "#FFA250",
+    borderRadius: 10,
+  },
+  loginButtonText: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 12,
   },
 });
