@@ -100,7 +100,10 @@ export const MainProductScreen = observer(({ navigation }) => {
             return (
               <TouchableOpacity
                 activeOpacity={0.5}
-                style={styles.itemPrePageProduct}
+                style={[
+                  styles.itemPrePageProduct,
+                  { margin: 0, marginBottom: 20 },
+                ]}
                 key={idx}
                 onPress={action(() => {
                   store.state.pojedinacneVelicine = [];
