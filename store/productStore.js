@@ -67,7 +67,19 @@ const filterFunciton = action((value, filterMethod) => {
   state.dataFetched.filter((item) => {
     if (item[filterMethod].startsWith(value)) {
       //DELA
-      state.filteredItems.push(item[filterMethod]);
+      if (filterMethod == "cijenaUKN") {
+        state.filteredItems.push({
+          naslov: item["naslov"],
+          cijenaUKN: item.cijenaUKN,
+          dostupneVelicine: item.dostupneVelicine,
+        });
+      } else {
+        state.filteredItems.push({
+          naslov: item[filterMethod],
+          cijenaUKN: item.cijenaUKN,
+          dostupneVelicine: item.dostupneVelicine,
+        });
+      }
     }
   });
 });
