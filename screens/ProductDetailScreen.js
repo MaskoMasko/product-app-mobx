@@ -1,8 +1,17 @@
 import React from "react";
-import { View, Text, Button, StyleSheet, Image } from "react-native";
+import {
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  Image,
+  Touchable,
+  TouchableOpacity,
+} from "react-native";
 import { store } from "../store/productStore";
 import { observer } from "mobx-react";
 import { action, runInAction } from "mobx";
+import { CustBtn } from "../components/CustBtn";
 
 //Product details
 export const ProductDetailScreen = observer(({ navigation, route }) => {
@@ -62,14 +71,18 @@ export const ProductDetailScreen = observer(({ navigation, route }) => {
           </View>
         </View>
       </View>
-      <Button
-        title="Add Item To Cart"
-        onPress={() => {
-          store.addItemToCart(store.state.chosenProduct);
-          navigation.navigate("Cart");
-        }}
-      ></Button>
-      <Button title="Go Back" onPress={() => navigation.goBack()}></Button>
+      <View style={{ flexDirection: "row" }}>
+        <TouchableOpacity  onPress={() => navigation.goBack()}>
+          <Text>GO BACK</Text>
+        </TouchableOpacity>
+        <CustBtn
+          onPress={() => {
+            store.addItemToCart(store.state.chosenProduct);
+            navigation.navigate("Cart");
+          }}
+          title="ADD ITEM TO CART"
+        ></CustBtn>
+      </View>
     </View>
   );
 });
