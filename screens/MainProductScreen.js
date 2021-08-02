@@ -173,14 +173,13 @@ export const MainProductScreen = observer(({ navigation }) => {
                 style={[
                   styles.loginButtonText,
                   {
-                    width: 50,
-                    height: 40,
                     marginHorizontal: 5,
                     fontSize: 18,
+                    marginVertical: 10,
+                    padding: 5,
+                    paddingHorizontal: 15,
                     textAlign: "center",
                     backgroundColor: "#04080F",
-                    paddingHorizontal: 10,
-                    paddingVertical: 5,
                     borderRadius: 10,
                     color: "white",
                   },
