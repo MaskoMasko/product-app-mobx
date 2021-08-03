@@ -8,112 +8,113 @@ import {
   Touchable,
   TouchableOpacity,
 } from "react-native";
-import { store } from "../store/productStore";
-import { observer } from "mobx-react";
+import { productStore, store } from "../store/productStore";
+// import { observer } from "mobx-react";
 import { action, runInAction } from "mobx";
 import { CustBtn } from "../components/CustBtn";
+import { observer } from "mobx-react-lite";
 
 //Product details
-export const ProductDetailScreen = observer(({ navigation, route }) => {
-  const { naslov, cijenaUKN, id, size } = store.state.chosenProduct;
-  const dostupneVelicine = store.state.chosenProductDostupneVelicine;
-  const urlNaslov = naslov.replace(/\//g, "").replace(/\’/g, "");
-  const [kojaVelicina, setKojaVelicina] = React.useState(dostupneVelicine[0]);
-  return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "#fff6cc",
-      }}
-    >
-      <View style={styles.modalProductContainer}>
-        <View style={styles.productContainer}>
-          <View style={{ alignItems: "center" }}>
-            <Image
-              source={{ uri: `http://mockapi.ddns.net/YEE/${urlNaslov}/1.png` }}
-              style={styles.altImage}
-            />
-            <Text style={styles.naslovText}>{naslov}</Text>
-            <View style={styles.textUnderHeading}>
-              <View style={styles.textPlacement}>
-                <Text style={styles.THICCText}>CIjena:</Text>
-                <Text style={styles.THICCText}>{cijenaUKN}</Text>
-              </View>
-              <View style={styles.textPlacement}>
-                <Text style={styles.THICCText}>Dostupne Velicine:</Text>
-                <View style={{ flexDirection: "row" }}>
-                  {dostupneVelicine.map((pojedinacnaVelicina, i) => {
-                    return (
-                      <TouchableOpacity
-                        style={
-                          pojedinacnaVelicina == kojaVelicina
-                            ? {
-                                padding: 5,
-                                backgroundColor: "orange",
-                                margin: 5,
-                                width: 30,
-                              }
-                            : {
-                                padding: 5,
-                                backgroundColor: "black",
-                                margin: 5,
-                                width: 30,
-                              }
-                        }
-                        key={i}
-                        onPress={() => {
-                          runInAction(() => {
-                            store.state.chosenProduct.size = pojedinacnaVelicina;
-                          });
-                          setKojaVelicina(dostupneVelicine[i]);
-                        }}
-                        activeOpacity={0.5}
-                      >
-                        <Text style={{ color: "white", fontWeight: "bold" }}>
-                          {pojedinacnaVelicina}
-                        </Text>
-                      </TouchableOpacity>
-                    );
-                  })}
-                </View>
-              </View>
-              <View style={styles.aboutText}>
-                <Text style={styles.thiccText}>ABOUT PRODUCT</Text>
-                <Text style={styles.tikText}>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                </Text>
-              </View>
-            </View>
-          </View>
-        </View>
-      </View>
-      <View style={{ flexDirection: "row", marginTop: -40, marginBottom: 50 }}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={{
-            padding: 10,
-            height: 45,
-            borderRadius: 10,
-            backgroundColor: "black",
-            marginTop: 10,
-          }}
-        >
-          <Text style={{ color: "white", fontWeight: "bold" }}>GO BACK</Text>
-        </TouchableOpacity>
-        <CustBtn
-          onPress={() => {
-            store.addItemToCart(store.state.chosenProduct);
-            navigation.navigate("Cart");
-          }}
-          title="ADD ITEM TO CART"
-        ></CustBtn>
-      </View>
-    </View>
-  );
-});
+// export const ProductDetailScreen = observer(({ navigation }) => {
+//   const { naslov, cijenaUKN, id, size } = store.state.chosenProduct;
+//   const dostupneVelicine = store.state.chosenProductDostupneVelicine;
+//   const urlNaslov = naslov.replace(/\//g, "").replace(/\’/g, "");
+//   const [kojaVelicina, setKojaVelicina] = React.useState(dostupneVelicine[0]);
+//   return (
+//     <View
+//       style={{
+//         flex: 1,
+//         alignItems: "center",
+//         justifyContent: "center",
+//         backgroundColor: "#fff6cc",
+//       }}
+//     >
+//       <View style={styles.modalProductContainer}>
+//         <View style={styles.productContainer}>
+//           <View style={{ alignItems: "center" }}>
+//             <Image
+//               source={{ uri: `http://mockapi.ddns.net/YEE/${urlNaslov}/1.png` }}
+//               style={styles.altImage}
+//             />
+//             <Text style={styles.naslovText}>{naslov}</Text>
+//             <View style={styles.textUnderHeading}>
+//               <View style={styles.textPlacement}>
+//                 <Text style={styles.THICCText}>CIjena:</Text>
+//                 <Text style={styles.THICCText}>{cijenaUKN}</Text>
+//               </View>
+//               <View style={styles.textPlacement}>
+//                 <Text style={styles.THICCText}>Dostupne Velicine:</Text>
+//                 <View style={{ flexDirection: "row" }}>
+//                   {dostupneVelicine.map((pojedinacnaVelicina, i) => {
+//                     return (
+//                       <TouchableOpacity
+//                         style={
+//                           pojedinacnaVelicina == kojaVelicina
+//                             ? {
+//                                 padding: 5,
+//                                 backgroundColor: "orange",
+//                                 margin: 5,
+//                                 width: 30,
+//                               }
+//                             : {
+//                                 padding: 5,
+//                                 backgroundColor: "black",
+//                                 margin: 5,
+//                                 width: 30,
+//                               }
+//                         }
+//                         key={i}
+//                         onPress={() => {
+//                           runInAction(() => {
+//                             store.state.chosenProduct.size = pojedinacnaVelicina;
+//                           });
+//                           setKojaVelicina(dostupneVelicine[i]);
+//                         }}
+//                         activeOpacity={0.5}
+//                       >
+//                         <Text style={{ color: "white", fontWeight: "bold" }}>
+//                           {pojedinacnaVelicina}
+//                         </Text>
+//                       </TouchableOpacity>
+//                     );
+//                   })}
+//                 </View>
+//               </View>
+//               <View style={styles.aboutText}>
+//                 <Text style={styles.thiccText}>ABOUT PRODUCT</Text>
+//                 <Text style={styles.tikText}>
+//                   Lorem Ipsum is simply dummy text of the printing and
+//                   typesetting industry. Lorem Ipsum has been the industry's
+//                 </Text>
+//               </View>
+//             </View>
+//           </View>
+//         </View>
+//       </View>
+//       <View style={{ flexDirection: "row", marginTop: -40, marginBottom: 50 }}>
+//         <TouchableOpacity
+//           onPress={() => navigation.goBack()}
+//           style={{
+//             padding: 10,
+//             height: 45,
+//             borderRadius: 10,
+//             backgroundColor: "black",
+//             marginTop: 10,
+//           }}
+//         >
+//           <Text style={{ color: "white", fontWeight: "bold" }}>GO BACK</Text>
+//         </TouchableOpacity>
+//         <CustBtn
+//           onPress={() => {
+//             store.addItemToCart(store.state.chosenProduct);
+//             navigation.navigate("Cart");
+//           }}
+//           title="ADD ITEM TO CART"
+//         ></CustBtn>
+//       </View>
+//     </View>
+//   );
+// });
 
 const styles = StyleSheet.create({
   modalProductContainer: {
@@ -168,4 +169,21 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "bold",
   },
+});
+
+export const ProductDetailScreen = observer(({ navigation }) => {
+  return (
+    <View>
+      <Text>{productStore.selectedProduct.naslov}</Text>
+      <CustBtn
+        title="ADD ITEM TO CART"
+        onPress={() => {
+          productStore.addSelectedProductToCartList(
+            productStore.selectedProduct.id
+          );
+          navigation.navigate("Cart");
+        }}
+      ></CustBtn>
+    </View>
+  );
 });
