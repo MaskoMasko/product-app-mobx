@@ -18,7 +18,7 @@ export const ProductDetailScreen = observer(({ navigation, route }) => {
   const { naslov, cijenaUKN, id, size } = store.state.chosenProduct;
   const dostupneVelicine = store.state.chosenProductDostupneVelicine;
   const urlNaslov = naslov.replace(/\//g, "").replace(/\’/g, "");
-
+  const [kojaVelicina, setKojaVelicina] = React.useState(dostupneVelicine[0]);
   return (
     <View
       style={{
@@ -46,16 +46,35 @@ export const ProductDetailScreen = observer(({ navigation, route }) => {
                 <View style={{ flexDirection: "row" }}>
                   {dostupneVelicine.map((pojedinacnaVelicina, i) => {
                     return (
-                      <Button
-                        title={pojedinacnaVelicina}
+                      <TouchableOpacity
+                        style={
+                          pojedinacnaVelicina == kojaVelicina
+                            ? {
+                                padding: 5,
+                                backgroundColor: "orange",
+                                margin: 5,
+                                width: 30,
+                              }
+                            : {
+                                padding: 5,
+                                backgroundColor: "black",
+                                margin: 5,
+                                width: 30,
+                              }
+                        }
                         key={i}
                         onPress={() => {
                           runInAction(() => {
-                            store.state.chosenProduct.size =
-                              pojedinacnaVelicina;
+                            store.state.chosenProduct.size = pojedinacnaVelicina;
                           });
+                          setKojaVelicina(dostupneVelicine[i]);
                         }}
-                      ></Button>
+                        activeOpacity={0.5}
+                      >
+                        <Text style={{ color: "white", fontWeight: "bold" }}>
+                          {pojedinacnaVelicina}
+                        </Text>
+                      </TouchableOpacity>
                     );
                   })}
                 </View>
@@ -71,9 +90,18 @@ export const ProductDetailScreen = observer(({ navigation, route }) => {
           </View>
         </View>
       </View>
-      <View style={{ flexDirection: "row" }}>
-        <TouchableOpacity  onPress={() => navigation.goBack()}>
-          <Text>GO BACK</Text>
+      <View style={{ flexDirection: "row", marginTop: -40, marginBottom: 50 }}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{
+            padding: 10,
+            height: 45,
+            borderRadius: 10,
+            backgroundColor: "black",
+            marginTop: 10,
+          }}
+        >
+          <Text style={{ color: "white", fontWeight: "bold" }}>GO BACK</Text>
         </TouchableOpacity>
         <CustBtn
           onPress={() => {
