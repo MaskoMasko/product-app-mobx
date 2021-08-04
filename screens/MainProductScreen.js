@@ -1,20 +1,16 @@
-import React, { useState, useEffect, useRef } from "react";
-import {
-  View,
-  Button,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  Modal,
-  StyleSheet,
-  Image,
-  Alert,
-} from "react-native";
-import { CustBtn } from "../components/CustBtn";
-import { productStore } from "../store/productStore";
-// import { observer } from "mobx-react";
-import { autorun, action } from "mobx";
 import { observer } from "mobx-react-lite";
+import React, { useEffect, useRef } from "react";
+import {
+  Button,
+  FlatList,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { productStore } from "../store/productStore";
 
 //then u go in
 // export const MainProductScreen = observer(({ navigation }) => {
@@ -24,8 +20,8 @@ import { observer } from "mobx-react-lite";
 //   const coutnerRef = useRef(0);
 
 //   const onNextPress = action(() => {
-//     scrollRef.current?.scrollTo({
 //       y: 0,
+//     scrollRef.current?.scrollTo({
 //       animated: false,
 //     });
 //   });
@@ -274,6 +270,51 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 12,
   },
+  scrollView: { flex: 1, backgroundColor: "#fff6cc" },
+});
+
+const ProductListItem = observer(function ProductListItem({
+  product,
+  idx,
+  navigation,
+}) {
+  const { naslov, dostupneVelicineList, id, cijenaUKN } = product;
+  return (
+    <TouchableOpacity
+      activeOpacity={0.5}
+      style={[styles.itemPrePageProduct, { margin: 0, marginBottom: 20 }]}
+      key={idx}
+      onPress={() => {
+        productStore.setSelectedProduct(id);
+        navigation.navigate("ProductDetails");
+      }}
+    >
+      <View style={{ alignItems: "center" }}>
+        <Image source={product.imageSource} style={styles.altImage} />
+        <Text style={styles.naslovText}>
+          {idx}. {naslov}
+        </Text>
+        <View style={styles.textUnderHeading}>
+          <View style={styles.textPlacement}>
+            <Text style={styles.THICCText}>CIjena:</Text>
+            <Text style={styles.THICCText}>{cijenaUKN}</Text>
+          </View>
+          <View style={styles.textPlacement}>
+            <Text style={styles.THICCText}>Dostupne Velicine:</Text>
+            <View style={[styles.THICCText, { flexDirection: "row" }]}>
+              {dostupneVelicineList.map((e, id) => {
+                return (
+                  <Text style={styles.THICCText} key={id}>
+                    {e}
+                  </Text>
+                );
+              })}
+            </View>
+          </View>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
 });
 
 export const MainProductScreen = observer(({ navigation }) => {
@@ -281,51 +322,38 @@ export const MainProductScreen = observer(({ navigation }) => {
   useEffect(() => {
     productStore.fetchData(url);
   }, []);
+  const scrollRef = useRef();
+
+  useEffect(() => {
+    productStore.set({ currentPage: 0 });
+  }, []);
   return (
-    <ScrollView style={{ backgroundColor: "#fff6cc" }}>
-      {productStore.productList.map((product, idx) => {
-        const { naslov, dostupneVelicine, id, cijenaUKN } = product;
-        const urlNaslov = naslov.replace(/\//g, "").replace(/\’/g, "");
+    <FlatList
+      ref={scrollRef}
+      keyExtractor={(product) => product.id.toString()}
+      style={styles.scrollView}
+      data={productStore.currentPageItems}
+      windowSize={5}
+      renderItem={({ item: product, index: idx }) => {
         return (
-          <TouchableOpacity
-            activeOpacity={0.5}
-            style={[styles.itemPrePageProduct, { margin: 0, marginBottom: 20 }]}
-            key={idx}
-            onPress={() => {
-              productStore.setSelectedProduct(id);
-              navigation.navigate("ProductDetails");
-            }}
-          >
-            <View style={{ alignItems: "center" }}>
-              <Image
-                source={{
-                  uri: `http://mockapi.ddns.net/YEE/${urlNaslov}/1.png`,
-                }}
-                style={styles.altImage}
-              />
-              <Text style={styles.naslovText}>{naslov}</Text>
-              <View style={styles.textUnderHeading}>
-                <View style={styles.textPlacement}>
-                  <Text style={styles.THICCText}>CIjena:</Text>
-                  <Text style={styles.THICCText}>{cijenaUKN}</Text>
-                </View>
-                <View style={styles.textPlacement}>
-                  <Text style={styles.THICCText}>Dostupne Velicine:</Text>
-                  <View style={[styles.THICCText, { flexDirection: "row" }]}>
-                    {dostupneVelicine.map((e, id) => {
-                      return (
-                        <Text style={styles.THICCText} key={id}>
-                          {e}
-                        </Text>
-                      );
-                    })}
-                  </View>
-                </View>
-              </View>
-            </View>
-          </TouchableOpacity>
+          <ProductListItem
+            product={product}
+            idx={idx}
+            navigation={navigation}
+          ></ProductListItem>
         );
-      })}
-    </ScrollView>
+      }}
+      ListFooterComponent={
+        <View>
+          <Button
+            title="GO NEXT"
+            onPress={() => {
+              productStore.goToNextPage();
+              scrollRef.current.scrollTo({ y: 0, animated: false });
+            }}
+          ></Button>
+        </View>
+      }
+    />
   );
 });
