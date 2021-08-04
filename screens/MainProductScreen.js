@@ -282,18 +282,43 @@ export const MainProductScreen = observer(({ navigation }) => {
     productStore.fetchData(url);
   }, []);
   return (
-    <ScrollView>
-      {productStore.productList.map((e, i) => {
-        const { id, naslov } = e;
+    <ScrollView style={{ backgroundColor: "#fff6cc" }}>
+      {productStore.productList.map((product, idx) => {
+        const { naslov, dostupneVelicine, id } = product;
+        const urlNaslov = naslov.replace(/\//g, "").replace(/\’/g, "");
         return (
           <TouchableOpacity
+            activeOpacity={0.5}
+            style={[styles.itemPrePageProduct, { margin: 0, marginBottom: 20 }]}
+            key={idx}
             onPress={() => {
               productStore.setSelectedProduct(id);
               navigation.navigate("ProductDetails");
             }}
-            key={i}
           >
-            <Text>{naslov}</Text>
+            <View style={{ alignItems: "center" }}>
+              <Image
+                source={{
+                  uri: `http://mockapi.ddns.net/YEE/${urlNaslov}/1.png`,
+                }}
+                style={styles.altImage}
+              />
+              <Text style={styles.naslovText}>{naslov}</Text>
+              <View style={styles.textUnderHeading}>
+                <View style={styles.textPlacement}>
+                  {/* <Text style={styles.THICCText}>CIjena:</Text>
+                    <Text style={styles.THICCText}>{cijenaUKN}</Text> */}
+                </View>
+                <View style={styles.textPlacement}>
+                  <Text style={styles.THICCText}>Dostupne Velicine:</Text>
+                  <View style={styles.THICCText}>
+                    {dostupneVelicine.map((e, id) => {
+                      return <Text key={id}>{e}</Text>;
+                    })}
+                  </View>
+                </View>
+              </View>
+            </View>
           </TouchableOpacity>
         );
       })}
