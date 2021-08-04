@@ -24,6 +24,7 @@ const Store = types
     productList: types.array(ProductModel),
     selectedProduct: types.safeReference(ProductModel),
     cartList: types.array(types.safeReference(ProductModel)),
+    zbroj: types.optional(types.number, 0),
   })
   .actions((self) => {
     return {
@@ -57,6 +58,13 @@ const Store = types
       },
       removeProductFromCartList(productId) {
         self.cartList.splice(productId, 1);
+      },
+      calculateMONEY() {
+        self.zbroj = 0;
+        for (let i = 0; i < self.cartList.length; i++) {
+          const samoBroj = self.cartList[i].cijenaUKN.split(".")[0];
+          self.zbroj += parseInt(samoBroj);
+        }
       },
       getData: flow(function* () {
         try {
