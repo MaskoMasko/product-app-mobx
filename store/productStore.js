@@ -16,6 +16,7 @@ const ProductModel = types.model("Product", {
   naslov: types.optional(types.string, ""),
   dostupneVelicine: types.array(types.string),
   odabranaVelicina: types.string,
+  cijenaUKN: types.string,
 });
 
 const Store = types
@@ -34,11 +35,12 @@ const Store = types
             const product = productListData[i];
             const splitaneVelicine = product.dostupneVelicine.split(",");
             self.productList.push({
-              id: product.id,
+              id: product.id - 1,
               naslov: product.naslov,
               dostupneVelicine: splitaneVelicine,
               //idk what is wrong with this like BEČLOW
               odabranaVelicina: product.dostupneVelicine[0],
+              cijenaUKN: product.cijenaUKN,
             });
             // self.productList.clear();
           }
@@ -51,7 +53,7 @@ const Store = types
         self.productList[productId].odabranaVelicina = velicina;
       },
       addSelectedProductToCartList(productId) {
-        self.cartList.push(productId);
+        self.cartList.push(self.productList[productId]);
       },
       removeProductFromCartList(productId) {
         self.cartList.splice(productId, 1);
