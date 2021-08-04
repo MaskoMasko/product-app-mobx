@@ -284,7 +284,7 @@ export const MainProductScreen = observer(({ navigation }) => {
   return (
     <ScrollView style={{ backgroundColor: "#fff6cc" }}>
       {productStore.productList.map((product, idx) => {
-        const { naslov, dostupneVelicine, id } = product;
+        const { naslov, dostupneVelicine, id, cijenaUKN } = product;
         const urlNaslov = naslov.replace(/\//g, "").replace(/\’/g, "");
         return (
           <TouchableOpacity
@@ -306,14 +306,18 @@ export const MainProductScreen = observer(({ navigation }) => {
               <Text style={styles.naslovText}>{naslov}</Text>
               <View style={styles.textUnderHeading}>
                 <View style={styles.textPlacement}>
-                  {/* <Text style={styles.THICCText}>CIjena:</Text>
-                    <Text style={styles.THICCText}>{cijenaUKN}</Text> */}
+                  <Text style={styles.THICCText}>CIjena:</Text>
+                  <Text style={styles.THICCText}>{cijenaUKN}</Text>
                 </View>
                 <View style={styles.textPlacement}>
                   <Text style={styles.THICCText}>Dostupne Velicine:</Text>
-                  <View style={styles.THICCText}>
+                  <View style={[styles.THICCText, { flexDirection: "row" }]}>
                     {dostupneVelicine.map((e, id) => {
-                      return <Text key={id}>{e}</Text>;
+                      return (
+                        <Text style={styles.THICCText} key={id}>
+                          {e}
+                        </Text>
+                      );
                     })}
                   </View>
                 </View>
