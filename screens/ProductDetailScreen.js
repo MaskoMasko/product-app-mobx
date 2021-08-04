@@ -172,18 +172,106 @@ const styles = StyleSheet.create({
 });
 
 export const ProductDetailScreen = observer(({ navigation }) => {
+  const { naslov, id, dostupneVelicine } = productStore.selectedProduct;
   return (
     <View>
       <Text>{productStore.selectedProduct.naslov}</Text>
-      <CustBtn
-        title="ADD ITEM TO CART"
-        onPress={() => {
-          productStore.addSelectedProductToCartList(
-            productStore.selectedProduct.id
-          );
-          navigation.navigate("Cart");
-        }}
-      ></CustBtn>
+      <View style={styles.modalProductContainer}>
+        <View style={styles.productContainer}>
+          <View style={{ alignItems: "center" }}>
+            {/* <Image
+              source={{ uri: `http://mockapi.ddns.net/YEE/${urlNaslov}/1.png` }}
+              style={styles.altImage}
+            /> */}
+            <Text style={styles.naslovText}>{naslov}</Text>
+            {/* <View style={styles.textPlacement}>
+                <Text style={styles.THICCText}>CIjena:</Text>
+                <Text style={styles.THICCText}>{cijenaUKN}</Text>
+              </View> */}
+            <View style={styles.textPlacement}>
+              <Text style={styles.THICCText}>Dostupne Velicine:</Text>
+              <View style={{ flexDirection: "row" }}>
+                {dostupneVelicine.map((pojedinacnaVelicina, i) => {
+                  return (
+                    <TouchableOpacity
+                      key={i}
+                      style={{ padding: 10, backgroundColor: "red", margin: 5 }}
+                      onPress={() => {
+                        productStore.setOdabranaVelicina(
+                          id,
+                          pojedinacnaVelicina
+                        );
+                        console.log(pojedinacnaVelicina);
+                      }}
+                    >
+                      <Text>{pojedinacnaVelicina}</Text>
+                    </TouchableOpacity>
+                    // <TouchableOpacity
+                    //   style={
+                    //     pojedinacnaVelicina == kojaVelicina
+                    //       ? {
+                    //           padding: 5,
+                    //           backgroundColor: "orange",
+                    //           margin: 5,
+                    //           width: 30,
+                    //         }
+                    //       : {
+                    //           padding: 5,
+                    //           backgroundColor: "black",
+                    //           margin: 5,
+                    //           width: 30,
+                    //         }
+                    //   }
+                    //   key={i}
+                    //   onPress={() => {
+                    //     runInAction(() => {
+                    //       store.state.chosenProduct.size = pojedinacnaVelicina;
+                    //     });
+                    //     setKojaVelicina(dostupneVelicine[i]);
+                    //   }}
+                    //   activeOpacity={0.5}
+                    // >
+                    //   <Text style={{ color: "white", fontWeight: "bold" }}>
+                    //     {pojedinacnaVelicina}
+                    //   </Text>
+                    // </TouchableOpacity>
+                  );
+                })}
+              </View>
+            </View>
+          </View>
+        </View>
+        <View style={styles.aboutText}>
+          <Text style={styles.thiccText}>ABOUT PRODUCT</Text>
+          <Text style={styles.tikText}>
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry. Lorem Ipsum has been the industry's
+          </Text>
+        </View>
+      </View>
+      <View style={{ flexDirection: "row", marginTop: -40, marginBottom: 50 }}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{
+            padding: 10,
+            height: 45,
+            borderRadius: 10,
+            backgroundColor: "black",
+            marginTop: 10,
+          }}
+        >
+          <Text style={{ color: "white", fontWeight: "bold" }}>GO BACK</Text>
+        </TouchableOpacity>
+        <CustBtn
+          onPress={() => {
+            productStore.addSelectedProductToCartList(
+              productStore.selectedProduct.id
+            );
+            navigation.navigate("Cart");
+          }}
+          title="ADD ITEM TO CART"
+        ></CustBtn>
+      </View>
     </View>
   );
 });
