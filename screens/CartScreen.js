@@ -122,6 +122,7 @@ export const CartScreen = observer(({ navigation }) => {
         return (
           <View key={i}>
             <Text>{e.naslov}</Text>
+            <Text>{e.odabranaVelicina}</Text>
             <Button
               onPress={() => productStore.removeProductFromCartList(i)}
               title="remove"
