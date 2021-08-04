@@ -14,7 +14,6 @@ const ProductModel = types
   .model("Product", {
     //TU MI BACA ERROR DA JE ID null/undefined
     //OMGAJGAD....................................
-    id: 1,
     id: types.identifierNumber,
     naslov: "",
     dostupneVelicine: types.string,

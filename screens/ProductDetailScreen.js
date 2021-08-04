@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
 });
 
 export const ProductDetailScreen = observer(({ navigation }) => {
-  const { naslov, id, dostupneVelicine, cijenaUKN } =
+  const { naslov, id, cijenaUKN, dostupneVelicineList } =
     productStore.selectedProduct;
   const urlNaslov = naslov.replace(/\//g, "").replace(/\’/g, "");
   return (
@@ -188,9 +188,7 @@ export const ProductDetailScreen = observer(({ navigation }) => {
         <View style={styles.productContainer}>
           <View style={{ alignItems: "center" }}>
             <Image
-              source={{
-                uri: `http://mockapi.ddns.net/YEE/${urlNaslov}/1.png`,
-              }}
+              source={productStore.selectedProduct.imageSource}
               style={styles.altImage}
             />
             <Text style={styles.naslovText}>{naslov}</Text>
@@ -202,7 +200,7 @@ export const ProductDetailScreen = observer(({ navigation }) => {
               <View style={styles.textPlacement}>
                 <Text style={styles.THICCText}>Dostupne Velicine:</Text>
                 <View style={{ flexDirection: "row" }}>
-                  {/* {dostupneVelicine.map((pojedinacnaVelicina, i) => {
+                  {dostupneVelicineList.map((pojedinacnaVelicina, i) => {
                     return (
                       <TouchableOpacity
                         key={i}
@@ -221,7 +219,7 @@ export const ProductDetailScreen = observer(({ navigation }) => {
                         <Text>{pojedinacnaVelicina.replace(/ /g, "")}</Text>
                       </TouchableOpacity>
                     );
-                  })} */}
+                  })}
                 </View>
               </View>
               <View style={styles.aboutText}>

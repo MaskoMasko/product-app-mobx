@@ -33,3 +33,10 @@ music itd............
 just check out this website i delaj projekte po redu
 pocetnici more like ne XD
 https://www.instamobile.io/react-native-tutorials/react-native-app-ideas-beginners/
+
+
+BUGOVI NA OVEMU: -poboljsati/popraviti dodavanje majica
+                 -add more and less majica i s razlicitin velicinami
+                 -bolji footer
+                 -dostupne velicine lista i styling 
+                 -i tjt 
