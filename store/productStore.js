@@ -8,16 +8,37 @@ import {
   onSnapshot,
   applySnapshot,
 } from "mobx-state-tree";
+import { State } from "react-native-gesture-handler";
 
-const ProductModel = types.model("Product", {
-  //TU MI BACA ERROR DA JE ID null/undefined
-  //OMGAJGAD....................................
-  id: types.identifierNumber,
-  naslov: types.optional(types.string, ""),
-  dostupneVelicine: types.array(types.string),
-  odabranaVelicina: types.string,
-  cijenaUKN: types.string,
-});
+const ProductModel = types
+  .model("Product", {
+    //TU MI BACA ERROR DA JE ID null/undefined
+    //OMGAJGAD....................................
+    id: 1,
+    id: types.identifierNumber,
+    naslov: "",
+    dostupneVelicine: types.string,
+    cijenaUKN: types.string,
+    slika1: types.maybe(types.string),
+
+    odabranaVelicina: types.maybe(types.string),
+  })
+  .views((self) => {
+    return {
+      get dostupneVelicineList() {
+        return self.dostupneVelicine.split(", ");
+      },
+
+      get cijenaNumber() {
+        return parseFloat(self.cijenaUKN);
+      },
+
+      get imageSource() {
+        const urlNaslov = self.naslov.replace(/\//g, "").replace(/\’/g, "");
+        return { uri: `http://mockapi.ddns.net/images/YEE/${urlNaslov}/1.png` };
+      },
+    };
+  });
 
 const Store = types
   .model("Store", {
@@ -25,27 +46,60 @@ const Store = types
     selectedProduct: types.safeReference(ProductModel),
     cartList: types.array(types.safeReference(ProductModel)),
     zbroj: types.optional(types.number, 0),
+    coutner: types.optional(types.number, 0),
+    itemsPerPage: types.optional(types.number, 20),
+    itemsPerPageList: types.array(ProductModel),
+
+    numItemsPerPage: 20,
+    currentPage: 0,
+  })
+  .actions((self) => {
+    return {
+      set(data) {
+        for (const key in data) {
+          self[key] = data[key];
+        }
+      },
+    };
+  })
+  .views((self) => {
+    return {
+      get productOffset() {
+        return self.currentPage * self.numItemsPerPage;
+      },
+    };
+  })
+  .views((self) => {
+    return {
+      get nextPage() {
+        return self.currentPage + 1;
+      },
+
+      get currentPageItems() {
+        return self.productList.slice(
+          self.productOffset,
+          self.productOffset + self.numItemsPerPage
+        );
+      },
+    };
+  })
+  .actions((self) => {
+    return {
+      goToNextPage() {
+        self.currentPage += 1;
+      },
+
+      goToPreviousPage() {
+        self.currentPage -= 1;
+      },
+    };
   })
   .actions((self) => {
     return {
       fetchData: flow(function* fetchData(url) {
-        while (self.productList.length < 10) {
-          const results = yield fetch(url);
-          const productListData = yield results.json();
-          for (let i = 0; i < 10; i++) {
-            const product = productListData[i];
-            const splitaneVelicine = product.dostupneVelicine.split(",");
-            self.productList.push({
-              id: product.id - 1,
-              naslov: product.naslov,
-              dostupneVelicine: splitaneVelicine,
-              //idk what is wrong with this like BEČLOW
-              odabranaVelicina: product.dostupneVelicine[0],
-              cijenaUKN: product.cijenaUKN,
-            });
-            // self.productList.clear();
-          }
-        }
+        const results = yield fetch(url);
+        const productListData = yield results.json();
+        self.productList = productListData;
       }),
       setSelectedProduct(productId) {
         self.selectedProduct = productId;
@@ -66,6 +120,9 @@ const Store = types
           self.zbroj += parseInt(samoBroj);
         }
       },
+      // nextPage() {
+      //   self.counter += 20;
+      // },
       getData: flow(function* () {
         try {
           const jsonValue = yield AsyncStorage.getItem("cart list");
@@ -101,7 +158,15 @@ const Store = types
         //onSnapshot uzima prvi arg Model(ca je self), a drugi callback func i on creates a listener that fires whenever a new snapshot is available (but only one per MobX transaction).
         //pretpostavljan da getSnapshot i applySnapshot returnaju novi snapshot
         onSnapshot(self, () => {
-          AsyncStorage.setItem("cart list", JSON.stringify(self));
+          const { productList, cartList } = self;
+
+          AsyncStorage.setItem(
+            "cart list",
+            JSON.stringify({
+              productList: getSnapshot(productList),
+              cartList: getSnapshot(cartList),
+            })
+          );
         });
       }),
     };
@@ -113,6 +178,7 @@ const Store = types
 export const productStore = Store.create({
   productList: [],
   cartList: [],
+  itemsPerPageList: [],
 });
 
 productStore.onAppStart();
