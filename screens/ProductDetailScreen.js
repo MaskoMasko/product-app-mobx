@@ -202,7 +202,7 @@ export const ProductDetailScreen = observer(({ navigation }) => {
               <View style={styles.textPlacement}>
                 <Text style={styles.THICCText}>Dostupne Velicine:</Text>
                 <View style={{ flexDirection: "row" }}>
-                  {dostupneVelicine.map((pojedinacnaVelicina, i) => {
+                  {/* {dostupneVelicine.map((pojedinacnaVelicina, i) => {
                     return (
                       <TouchableOpacity
                         key={i}
@@ -221,7 +221,7 @@ export const ProductDetailScreen = observer(({ navigation }) => {
                         <Text>{pojedinacnaVelicina.replace(/ /g, "")}</Text>
                       </TouchableOpacity>
                     );
-                  })}
+                  })} */}
                 </View>
               </View>
               <View style={styles.aboutText}>
