@@ -14,6 +14,8 @@ const ProductModel = types.model("Product", {
   //OMGAJGAD....................................
   id: types.identifierNumber,
   naslov: types.optional(types.string, ""),
+  dostupneVelicine: types.array(types.string),
+  odabranaVelicina: types.string,
 });
 
 const Store = types
@@ -25,17 +27,28 @@ const Store = types
   .actions((self) => {
     return {
       fetchData: flow(function* fetchData(url) {
-        while (self.productList.length < 438) {
+        while (self.productList.length < 10) {
           const results = yield fetch(url);
           const productListData = yield results.json();
-          for (let i = 0; i < productListData.length; i++) {
+          for (let i = 0; i < 10; i++) {
             const product = productListData[i];
-            self.productList.push({ id: product.id, naslov: product.naslov });
+            const splitaneVelicine = product.dostupneVelicine.split(",");
+            self.productList.push({
+              id: product.id,
+              naslov: product.naslov,
+              dostupneVelicine: splitaneVelicine,
+              //idk what is wrong with this like BEČLOW
+              odabranaVelicina: product.dostupneVelicine[0],
+            });
+            // self.productList.clear();
           }
         }
       }),
       setSelectedProduct(productId) {
         self.selectedProduct = productId;
+      },
+      setOdabranaVelicina(productId, velicina) {
+        self.productList[productId].odabranaVelicina = velicina;
       },
       addSelectedProductToCartList(productId) {
         self.cartList.push(productId);
@@ -43,7 +56,7 @@ const Store = types
       removeProductFromCartList(productId) {
         self.cartList.splice(productId, 1);
       },
-      getData: flow(function*() {
+      getData: flow(function* () {
         try {
           const jsonValue = yield AsyncStorage.getItem("cart list");
           return jsonValue != null ? JSON.parse(jsonValue) : null;
@@ -52,7 +65,7 @@ const Store = types
           console.log("Error: ", e);
         }
       }),
-      onAppStart: flow(function*() {
+      onAppStart: flow(function* () {
         // 1. Dohvati iz AsyncStorea podatke, i "applySnaphot" na model
         try {
           const rez = yield self.getData();
